@@ -1,0 +1,83 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2868
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 EL PIN DEL ROBOT\
+\
+\'bfCu\'e1l era el error?\
+La condici\'f3n del final estaba as\'ed:\
+\
+Hasta Que acceso Y intentos = 3\
+\
+Con la Y, el ciclo solo se detiene cuando pasan las dos cosas al mismo tiempo:\
+que haya acceso y que ya se hayan gastado los 3 intentos. Por eso:\
+- Si alguien acierta el PIN a la primera, el robot igual le sigue pidiendo el PIN.\
+- Si nadie lo acierta, acceso nunca es verdadero y el ciclo no para nunca.\
+  Por eso el contador se dispar\'f3 hasta 1739.\
+\
+\
+\'bfC\'f3mo lo arregl\'e9?\
+Pens\'e9 cu\'e1ndo debe parar el robot: cuando la persona acierta O cuando se\
+acaban los 3 intentos. Con De Morgan, seguir pidiendo el PIN es lo contrario:\
+NO acceso Y intentos < 3. Entonces la condici\'f3n correcta queda:\
+\
+Hasta Que acceso O intentos = 3\
+\
+\
+C\'d3DIGO (PinRobot.psc)\
+\
+Algoritmo PinRobot\
+	Definir pin, intentos Como Entero\
+	Definir acceso Como Logico\
+	intentos <- 0\
+	acceso <- Falso\
+	Repetir\
+		Escribir "Ingresa tu PIN:"\
+		Leer pin\
+		intentos <- intentos + 1\
+		Si pin = 2580 Entonces\
+			acceso <- Verdadero\
+		FinSi\
+	Hasta Que acceso O intentos = 3\
+	Si acceso Entonces\
+		Escribir "Acceso concedido"\
+	SiNo\
+		Escribir "Cajero bloqueado"\
+	FinSi\
+FinAlgoritmo\
+\
+Le puse intentos en 0 y acceso en Falso antes del ciclo, y un mensaje al final\
+para que se vea si la persona entr\'f3 o si el cajero se bloque\'f3.\
+\
+\
+PRUEBAS DE ESCRITORIO\
+\
+Caso 1: acierta a la primera (2580)\
+\
+Intento | pin  | intentos | acceso | acceso O intentos = 3\
+--------|------|----------|--------|----------------------\
+   1    | 2580 |    1     |   V    | V, termina\
+\
+Salida: Acceso concedido\
+\
+Caso 2: falla las tres veces (1111, 2222, 3333)\
+\
+Intento | pin  | intentos | acceso | acceso O intentos = 3\
+--------|------|----------|--------|----------------------\
+   1    | 1111 |    1     |   F    | F, sigue\
+   2    | 2222 |    2     |   F    | F, sigue\
+   3    | 3333 |    3     |   F    | V, termina\
+\
+Salida: Cajero bloqueado\
+\
+Caso 3: falla una vez y luego acierta (1111, 2580)\
+\
+Intento | pin  | intentos | acceso | acceso O intentos = 3\
+--------|------|----------|--------|----------------------\
+   1    | 1111 |    1     |   F    | F, sigue\
+   2    | 2580 |    2     |   V    | V, termina\
+\
+Salida: Acceso concedido}
