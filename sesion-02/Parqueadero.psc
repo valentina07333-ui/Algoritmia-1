@@ -1,0 +1,69 @@
+PARQUEADERO
+
+Reglas del administrador
+1. Carro: $4.000 por hora o fracción. Moto: $2.000.
+2. Los primeros 15 minutos son gratis.
+3. El cobro máximo del día es $30.000.
+4. Con factura del centro comercial paga la mitad (después del máximo).
+5. Tipo que no sea carro ni moto, o minutos negativos: error.
+
+
+CÓDIGO (Parqueadero.psc)
+
+Algoritmo Parqueadero
+	Definir tipo, factura Como Caracter
+	Definir minutos, horas, tarifa Como Entero
+	Definir valor Como Real
+	Escribir "¿Qué tipo de vehículo es? (carro/moto)"
+	Leer tipo
+	Escribir "¿Cuántos minutos estuvo?"
+	Leer minutos
+	Escribir "¿Tiene factura del centro comercial? (S/N)"
+	Leer factura
+	tipo <- Minusculas(tipo)
+	factura <- Mayusculas(factura)
+	Si tipo <> "carro" Y tipo <> "moto" Entonces
+		Escribir "Tipo no válido"
+	SiNo
+		Si minutos < 0 Entonces
+			Escribir "Minutos negativos"
+		SiNo
+			Si minutos <= 15 Entonces
+				valor <- 0
+			SiNo
+				Si tipo = "carro" Entonces
+					tarifa <- 4000
+				SiNo
+					tarifa <- 2000
+				FinSi
+				horas <- trunc(minutos / 60)
+				Si minutos MOD 60 > 0 Entonces
+					horas <- horas + 1
+				FinSi
+				valor <- horas * tarifa
+				Si valor > 30000 Entonces
+					valor <- 30000
+				FinSi
+				Si factura = "S" Entonces
+					valor <- valor / 2
+				FinSi
+			FinSi
+			Escribir "El valor a pagar es: $", valor
+		FinSi
+	FinSi
+FinAlgoritmo
+
+
+TABLA DE DECISIÓN (casos borde)
+
+# | Tipo  | Min | Factura | Horas cobradas | Esperado
+--|-------|-----|---------|----------------|----------------------
+1 | Carro |  15 | No      | -              | 0
+2 | Carro |  16 | No      | 1              | 4000
+3 | Carro |  60 | No      | 1              | 4000
+4 | Carro |  61 | No      | 2              | 8000
+5 | Moto  |  61 | No      | 2              | 4000
+6 | Carro | 600 | No      | 10             | 30000 (tope)
+7 | Carro | 600 | Sí      | 10             | 15000 (mitad del tope)
+8 | 3     |  30 | No      | -              | Tipo no válido
+9 | Carro |  -5 | No      | -              | Minutos negativos

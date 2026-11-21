@@ -1,0 +1,61 @@
+CALIFICACIONES (Calificaciones.psc)
+
+Algoritmo Calificaciones
+	Definir i, aprobados Como Entero
+	Definir nota, suma, promedio, maximo, minimo Como Real
+	Definir alguienPerdio Como Logico
+	suma <- 0
+	aprobados <- 0
+	maximo <- 0
+	minimo <- 5
+	alguienPerdio <- Falso
+	Para i <- 1 Hasta 5 Con Paso 1 Hacer
+		Escribir "Escribe la nota del estudiante ", i, ":"
+		Leer nota
+		suma <- suma + nota
+		Si nota >= 3 Entonces
+			aprobados <- aprobados + 1
+		SiNo
+			alguienPerdio <- Verdadero
+		FinSi
+		Si nota > maximo Entonces
+			maximo <- nota
+		FinSi
+		Si nota < minimo Entonces
+			minimo <- nota
+		FinSi
+	FinPara
+	promedio <- suma / 5
+	Escribir "El promedio es: ", promedio
+	Escribir "Aprobaron: ", aprobados
+	Escribir "Nota más alta: ", maximo
+	Escribir "Nota más baja: ", minimo
+	Si alguienPerdio Entonces
+		Escribir "Hubo al menos un estudiante que perdió"
+	SiNo
+		Escribir "Nadie perdió"
+	FinSi
+FinAlgoritmo
+
+
+PRUEBA DE ESCRITORIO (se escriben 3.5, 2.8, 4.9, 3.0 y 4.2)
+
+Vuelta         | nota | suma | aprobados | maximo | minimo | alguienPerdio
+---------------|------|------|-----------|--------|--------|--------------
+Antes del ciclo|  -   |  0   |     0     |   0    |   5    |      F
+      1        | 3.5  | 3.5  |     1     |  3.5   |  3.5   |      F
+      2        | 2.8  | 6.3  |     1     |  3.5   |  2.8   |      V
+      3        | 4.9  | 11.2 |     2     |  4.9   |  2.8   |      V
+      4        | 3.0  | 14.2 |     3     |  4.9   |  2.8   |      V
+      5        | 4.2  | 18.4 |     4     |  4.9   |  2.8   |      V
+
+promedio = 18.4 / 5 = 3.68
+
+
+SALIDA
+
+El promedio es: 3.68
+Aprobaron: 4
+Nota más alta: 4.9
+Nota más baja: 2.8
+Hubo al menos un estudiante que perdió
